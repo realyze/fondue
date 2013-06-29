@@ -1,0 +1,13 @@
+sys = require 'sys'
+{spawn} = require 'child_process'
+
+
+runCmd = (cmd, opts, cwd) ->
+  process.chdir cwd
+  p = spawn cmd, opts
+  for out in ['stdout', 'stderr']
+    p[out].on 'data', (data) -> sys.print data.toString()
+
+
+task 'dev', 'Build client (brunch build) and run server', ->
+  runCmd 'brunch', ['watch'], 'client'
